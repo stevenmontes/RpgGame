@@ -1,36 +1,31 @@
-class_name Player extends CharacterBody2D
+class_name Enemy extends CharacterBody2D
+
+signal direction_changed(new_direction: Vector2)
+signal enemy_damaged()
+
+const DIR_4 = [Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT, Vector2.UP]
+
+@export var hp: int = 3
 
 var cardinal_direction: Vector2 = Vector2.DOWN
 var direction : Vector2 = Vector2.ZERO
-const DIR_4 = [Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT, Vector2.UP]
+var player: Player
+var invulnerable := false
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var state_machine: PlayerStateMachine = $StateMachine
+@onready var state_machine: EnemyStateMachine = $EnemyStateMachine
 
-signal direction_changed(new_direction: Vector2)
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	PlayerManager.player = self
 	state_machine.initialize(self)
+	player = PlayerManager.player
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	#direction.x = Input.get_action_strength("right") - Input.get_action_strength("left")
-	#direction.y = Input.get_action_strength("down") - Input.get_action_strength("up")
-	direction = Vector2(
-		Input.get_axis("left", "right"),
-		Input.get_axis("up", "down")
-	).normalized()
-	
-	direction = direction.normalized()
-
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
-func set_direction() -> bool:
+func set_direction(_new_direction: Vector2) -> bool:
+	direction = _new_direction
+	
 	if direction == Vector2.ZERO:
 		return false
 		
@@ -55,4 +50,3 @@ func anim_direction() -> String:
 		return "up"
 	else:
 		return "side"
-	

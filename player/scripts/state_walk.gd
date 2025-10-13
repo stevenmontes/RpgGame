@@ -15,7 +15,7 @@ func enter() -> void:
 func exit() -> void:
 	pass
 	
-func process(delta: float) -> State:
+func process(_delta: float) -> State:
 	if player.direction == Vector2.ZERO:
 		return idle
 		
@@ -26,7 +26,7 @@ func process(delta: float) -> State:
 		
 	return null
 	
-func physics(delta: float) -> State:
+func physics(_delta: float) -> State:
 	return null
 	
 func handle_input(_event: InputEvent) -> State:
