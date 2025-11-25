@@ -3,3 +3,16 @@ class_name ItemData extends Resource
 @export var name: String = ""
 @export_multiline var description: String = ""
 @export var texture: Texture2D
+
+@export_category('Item Use Effects')
+@export var effects: Array[ItemEffect]
+
+func use() -> bool:
+	if effects.is_empty():
+		return false
+		
+	for effect in effects:
+		if effect:
+			effect.use()
+		
+	return true
