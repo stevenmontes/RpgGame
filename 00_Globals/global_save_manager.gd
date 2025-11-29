@@ -14,7 +14,9 @@ var current_save: Dictionary = {
 		pos_y = 0
 	},
 	items = [],
-	persistance = [],
+	persistance = [
+		'level01/treasurechest01/open'
+	],
 	quests = []
 }
 
@@ -66,3 +68,11 @@ func update_scene_path() -> void:
 func update_item_data() -> void:
 	current_save.items = PlayerManager.INVENTORY_DATA.get_save_data()
 	
+	
+func add_persistent_value(value: String) -> void:
+	if not check_persistent_value(value):
+		current_save.persistance.append(value)
+	
+func check_persistent_value(value: String) -> bool:
+	var persistent_array = current_save.persistance as Array
+	return persistent_array.has(value)
